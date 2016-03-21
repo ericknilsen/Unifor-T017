@@ -7,26 +7,26 @@ import java.util.Queue;
 
 public class PipeImpl<T> implements Pipe<T> {
     private Queue<T> buffer = new LinkedList<T>();
-    private boolean isOpenForWriting = true;
-    private boolean hasReadLastObject = false;
+    private boolean abertoParaEscrita = true;
+    private boolean leuUltimoObjeto = false;
 
     @Override
-    public synchronized boolean put(T obj) {
-        if (!isOpenForWriting) {
+    public synchronized boolean insere(T obj) {
+        if (!abertoParaEscrita) {
             throw new RuntimeException(new IOException("Pipe fechado; impossível escrever nele"));
         } else if (obj == null) {
             throw new IllegalArgumentException("Não é permitido inserir null no pipe; null é usado p/ indicar pipe vazio");
         }
 
-        boolean wasAdded = buffer.add(obj);
+        boolean foiAdicionado = buffer.add(obj);
         notify();
         
-        return wasAdded;
+        return foiAdicionado;
     }
 
     @Override   
-    public synchronized T nextOrNullIfEmptied() throws InterruptedException {
-        if (hasReadLastObject) {
+    public synchronized T proximoObjeto() throws InterruptedException {
+        if (leuUltimoObjeto) {
             throw new NoSuchElementException("Pipe fechado ou vazio");
         }
 
@@ -36,14 +36,14 @@ public class PipeImpl<T> implements Pipe<T> {
 
         T obj = buffer.remove();
         if (obj == null) { 
-            hasReadLastObject = true;
+        	leuUltimoObjeto = true;
         }
         return obj;
     }
 
     @Override
-    public synchronized void closeForWriting() {
-        isOpenForWriting = false;
+    public synchronized void fecha() {
+    	abertoParaEscrita = false;
         buffer.add(null);
         notify();
     }

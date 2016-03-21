@@ -13,14 +13,14 @@ public class Principal {
         final Pipe<String> pipeDataSink = new PipeImpl<String>();
 
         // Cria os componentes que usam os pipes
-        final DataSource<Integer> generator = new ExemploDataSource(pipeDataSource);
+        final DataSource<Integer> dataSource = new ExemploDataSource(pipeDataSource);
         final Filter<Integer, String> filter = new ExemploFilter(pipeDataSource, pipeDataSink);
-        final DataSink<String> sink = new ExemploDataSink(pipeDataSink);
+        final DataSink<String> dataSink = new ExemploDataSink(pipeDataSink);
 
         // Inicia todos os componentes
-        generator.start();
+        dataSource.start();
         filter.start();
-        sink.start();
+        dataSink.start();
         
     }
 }

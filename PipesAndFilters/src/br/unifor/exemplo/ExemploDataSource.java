@@ -11,11 +11,11 @@ public class ExemploDataSource extends DataSource<Integer> {
     @Override
     public void gerarDados(Pipe<Integer> pipe) {
         for (int i = 1; i <= 10; i++) {
-            pipe.put(new Integer(i));
+            pipe.insere(new Integer(i));
             System.out.println("DataSource gerou: " + Integer.toString(i));            
             delayForDebug(200);
         }
-        pipe.closeForWriting();
+        pipe.fecha();
         System.out.println("Datasource finalizado");
     }
 }

@@ -1,7 +1,7 @@
 package br.unifor.pipe;
 
 public interface Pipe<T> {
-    public boolean put(T obj);
-    public T nextOrNullIfEmptied() throws InterruptedException;
-    public void closeForWriting();
+    public boolean insere(T obj);
+    public T proximoObjeto() throws InterruptedException;
+    public void fecha();
 }

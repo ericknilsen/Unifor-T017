@@ -12,16 +12,16 @@ public abstract class SimpleFilter<I, O> extends Filter<I, O> {
     protected void transformaDados(Pipe<I> input, Pipe<O> output) {
         try {
             I in;
-            while ((in = input.nextOrNullIfEmptied()) != null) {
+            while ((in = input.proximoObjeto()) != null) {
                 O out = transforma(in);
-                output.put(out);
+                output.insere(out);
             }
         } catch (InterruptedException e) {            
             System.err.println("Interrompido");
             e.printStackTrace();
             return;
         }
-        output.closeForWriting();
+        output.fecha();
     }
 
     protected abstract O transforma(I in);

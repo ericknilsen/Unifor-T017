@@ -12,7 +12,7 @@ public class ExemploDataSink extends DataSink<String> {
     public void recebe(Pipe<String> pipe) {
         try {
             String in;
-            while ((in = pipe.nextOrNullIfEmptied()) != null) {
+            while ((in = pipe.proximoObjeto()) != null) {
                 System.out.println("Saída DataSink: "+in);
                 System.out.println();
                 delayForDebug(300);
